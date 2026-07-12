@@ -1,0 +1,197 @@
+{
+  "$defs": {
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "channel": {
+      "enum": [
+        "stable",
+        "adaptive",
+        "experimental",
+        "pinned"
+      ],
+      "title": "Channel",
+      "type": "string"
+    },
+    "compatibility": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "title": "Compatibility",
+      "type": "object"
+    },
+    "components": {
+      "additionalProperties": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Components",
+      "type": "object"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "portfolio_cells": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Portfolio Cells",
+      "type": "array"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "release_id": {
+      "minLength": 1,
+      "title": "Release Id",
+      "type": "string"
+    },
+    "rollback_release_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rollback Release Id"
+    },
+    "schema_version": {
+      "const": "deployment_manifest.v1",
+      "default": "deployment_manifest.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "signature": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Signature"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "training_cutoff": {
+      "format": "date-time",
+      "title": "Training Cutoff",
+      "type": "string"
+    },
+    "valid_from": {
+      "format": "date-time",
+      "title": "Valid From",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    },
+    "validation_metrics": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Validation Metrics",
+      "type": "object"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "release_id",
+    "channel",
+    "valid_from",
+    "training_cutoff",
+    "components",
+    "portfolio_cells",
+    "validation_metrics",
+    "compatibility"
+  ],
+  "title": "DeploymentManifest",
+  "type": "object"
+}

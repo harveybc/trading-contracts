@@ -1,0 +1,253 @@
+{
+  "$defs": {
+    "AccountSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "balance": {
+          "title": "Balance",
+          "type": "number"
+        },
+        "currency": {
+          "minLength": 1,
+          "title": "Currency",
+          "type": "string"
+        },
+        "equity": {
+          "title": "Equity",
+          "type": "number"
+        },
+        "margin_available": {
+          "title": "Margin Available",
+          "type": "number"
+        },
+        "margin_used": {
+          "title": "Margin Used",
+          "type": "number"
+        }
+      },
+      "required": [
+        "balance",
+        "equity",
+        "margin_used",
+        "margin_available",
+        "currency"
+      ],
+      "title": "AccountSnapshot",
+      "type": "object"
+    },
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "account": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AccountSnapshot"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "broker_ids": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Broker Ids",
+      "type": "object"
+    },
+    "commission": {
+      "default": 0.0,
+      "title": "Commission",
+      "type": "number"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "conversion_cost": {
+      "default": 0.0,
+      "title": "Conversion Cost",
+      "type": "number"
+    },
+    "filled_price": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Filled Price"
+    },
+    "filled_units": {
+      "default": 0.0,
+      "title": "Filled Units",
+      "type": "number"
+    },
+    "financing": {
+      "default": 0.0,
+      "title": "Financing",
+      "type": "number"
+    },
+    "latency_ms": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Latency Ms"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "order_intent_id": {
+      "minLength": 1,
+      "title": "Order Intent Id",
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "reason_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reason Code"
+    },
+    "requested_price": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Requested Price"
+    },
+    "requested_units": {
+      "title": "Requested Units",
+      "type": "number"
+    },
+    "schema_version": {
+      "const": "execution_report.v1",
+      "default": "execution_report.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "slippage_cost": {
+      "default": 0.0,
+      "title": "Slippage Cost",
+      "type": "number"
+    },
+    "spread_cost": {
+      "default": 0.0,
+      "title": "Spread Cost",
+      "type": "number"
+    },
+    "state": {
+      "enum": [
+        "requested",
+        "accepted",
+        "filled",
+        "rejected",
+        "modified",
+        "closed"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "order_intent_id",
+    "state",
+    "requested_units"
+  ],
+  "title": "ExecutionReport",
+  "type": "object"
+}

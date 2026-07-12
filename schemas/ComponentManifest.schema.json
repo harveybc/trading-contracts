@@ -1,0 +1,232 @@
+{
+  "$defs": {
+    "ArtifactReference": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "media_type": {
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "uri": {
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "content_hash",
+        "size_bytes",
+        "media_type"
+      ],
+      "title": "ArtifactReference",
+      "type": "object"
+    },
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "$ref": "#/$defs/ArtifactReference"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "code_commits": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Code Commits",
+      "type": "object"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "dataset_hashes": {
+      "additionalProperties": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Dataset Hashes",
+      "type": "object"
+    },
+    "domain_id": {
+      "minLength": 1,
+      "title": "Domain Id",
+      "type": "string"
+    },
+    "execution_contract_version": {
+      "minLength": 1,
+      "title": "Execution Contract Version",
+      "type": "string"
+    },
+    "feature_hashes": {
+      "additionalProperties": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Feature Hashes",
+      "type": "object"
+    },
+    "input_contract_versions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Input Contract Versions",
+      "type": "array"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "output_contract_versions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Output Contract Versions",
+      "type": "array"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "resolved_config": {
+      "additionalProperties": true,
+      "title": "Resolved Config",
+      "type": "object"
+    },
+    "resolved_config_hash": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Resolved Config Hash",
+      "type": "string"
+    },
+    "role": {
+      "minLength": 1,
+      "title": "Role",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "component_manifest.v1",
+      "default": "component_manifest.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "training_cutoff": {
+      "format": "date-time",
+      "title": "Training Cutoff",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    },
+    "validation_metrics": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Validation Metrics",
+      "type": "object"
+    },
+    "validation_weeks": {
+      "minimum": 0,
+      "title": "Validation Weeks",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "role",
+    "domain_id",
+    "artifact",
+    "resolved_config",
+    "resolved_config_hash",
+    "code_commits",
+    "dataset_hashes",
+    "training_cutoff",
+    "seed",
+    "input_contract_versions",
+    "output_contract_versions",
+    "validation_metrics",
+    "validation_weeks",
+    "execution_contract_version"
+  ],
+  "title": "ComponentManifest",
+  "type": "object"
+}

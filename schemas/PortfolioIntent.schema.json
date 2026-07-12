@@ -1,0 +1,189 @@
+{
+  "$defs": {
+    "PortfolioConstraintState": {
+      "additionalProperties": false,
+      "properties": {
+        "gross_exposure_limit": {
+          "minimum": 0.0,
+          "title": "Gross Exposure Limit",
+          "type": "number"
+        },
+        "max_cell_weight": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Max Cell Weight",
+          "type": "number"
+        },
+        "net_exposure_limit": {
+          "minimum": 0.0,
+          "title": "Net Exposure Limit",
+          "type": "number"
+        },
+        "turnover_limit": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Turnover Limit"
+        }
+      },
+      "required": [
+        "gross_exposure_limit",
+        "net_exposure_limit",
+        "max_cell_weight"
+      ],
+      "title": "PortfolioConstraintState",
+      "type": "object"
+    },
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allocator_artifact_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Allocator Artifact Hash"
+    },
+    "allocator_id": {
+      "minLength": 1,
+      "title": "Allocator Id",
+      "type": "string"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "cash_weight": {
+      "title": "Cash Weight",
+      "type": "number"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "constraints": {
+      "$ref": "#/$defs/PortfolioConstraintState"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "schema_version": {
+      "const": "portfolio_intent.v1",
+      "default": "portfolio_intent.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_weights": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Target Weights",
+      "type": "object"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "target_weights",
+    "cash_weight",
+    "constraints",
+    "allocator_id"
+  ],
+  "title": "PortfolioIntent",
+  "type": "object"
+}

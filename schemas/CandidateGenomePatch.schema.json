@@ -1,0 +1,27 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "base_config_hash": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Base Config Hash",
+      "type": "string"
+    },
+    "genes": {
+      "additionalProperties": true,
+      "title": "Genes",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "candidate_genome_patch.v1",
+      "default": "candidate_genome_patch.v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "base_config_hash",
+    "genes"
+  ],
+  "title": "CandidateGenomePatch",
+  "type": "object"
+}

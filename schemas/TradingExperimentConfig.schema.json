@@ -1,0 +1,103 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "additionalProperties": true,
+      "title": "Artifacts",
+      "type": "object"
+    },
+    "asset_policy": {
+      "additionalProperties": true,
+      "title": "Asset Policy",
+      "type": "object"
+    },
+    "code": {
+      "additionalProperties": true,
+      "title": "Code",
+      "type": "object"
+    },
+    "context_encoder": {
+      "additionalProperties": true,
+      "title": "Context Encoder",
+      "type": "object"
+    },
+    "data": {
+      "additionalProperties": true,
+      "title": "Data",
+      "type": "object"
+    },
+    "deployment": {
+      "additionalProperties": true,
+      "title": "Deployment",
+      "type": "object"
+    },
+    "environment": {
+      "additionalProperties": true,
+      "title": "Environment",
+      "type": "object"
+    },
+    "experiment": {
+      "additionalProperties": true,
+      "title": "Experiment",
+      "type": "object"
+    },
+    "lifecycle_policy": {
+      "additionalProperties": true,
+      "title": "Lifecycle Policy",
+      "type": "object"
+    },
+    "objectives": {
+      "additionalProperties": true,
+      "title": "Objectives",
+      "type": "object"
+    },
+    "olap": {
+      "additionalProperties": true,
+      "title": "Olap",
+      "type": "object"
+    },
+    "optimization": {
+      "additionalProperties": true,
+      "title": "Optimization",
+      "type": "object"
+    },
+    "portfolio": {
+      "additionalProperties": true,
+      "title": "Portfolio",
+      "type": "object"
+    },
+    "predictions": {
+      "additionalProperties": true,
+      "title": "Predictions",
+      "type": "object"
+    },
+    "risk": {
+      "additionalProperties": true,
+      "title": "Risk",
+      "type": "object"
+    },
+    "rush_detector": {
+      "additionalProperties": true,
+      "title": "Rush Detector",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "trading_experiment.v1",
+      "default": "trading_experiment.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "training": {
+      "additionalProperties": true,
+      "title": "Training",
+      "type": "object"
+    },
+    "walk_forward": {
+      "additionalProperties": true,
+      "title": "Walk Forward",
+      "type": "object"
+    }
+  },
+  "title": "TradingExperimentConfig",
+  "type": "object"
+}

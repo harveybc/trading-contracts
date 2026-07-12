@@ -1,0 +1,128 @@
+{
+  "$defs": {
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "asset_id": {
+      "minLength": 1,
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "cell_id": {
+      "minLength": 1,
+      "title": "Cell Id",
+      "type": "string"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "data_profile": {
+      "minLength": 1,
+      "title": "Data Profile",
+      "type": "string"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "policy_role": {
+      "minLength": 1,
+      "title": "Policy Role",
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "schema_version": {
+      "const": "cell_definition.v1",
+      "default": "cell_definition.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "timeframe": {
+      "minLength": 1,
+      "title": "Timeframe",
+      "type": "string"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "cell_id",
+    "asset_id",
+    "timeframe",
+    "data_profile",
+    "policy_role"
+  ],
+  "title": "CellDefinition",
+  "type": "object"
+}

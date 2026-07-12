@@ -1,0 +1,151 @@
+{
+  "$defs": {
+    "MetricDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregation": {
+          "enum": [
+            "mean",
+            "compound",
+            "sum",
+            "max",
+            "min",
+            "last",
+            "quantile"
+          ],
+          "title": "Aggregation",
+          "type": "string"
+        },
+        "coverage_rule": {
+          "minLength": 1,
+          "title": "Coverage Rule",
+          "type": "string"
+        },
+        "denominator": {
+          "minLength": 1,
+          "title": "Denominator",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "direction": {
+          "enum": [
+            "higher",
+            "lower",
+            "constraint_only"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "failure_semantics": {
+          "minLength": 1,
+          "title": "Failure Semantics",
+          "type": "string"
+        },
+        "formula": {
+          "minLength": 1,
+          "title": "Formula",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "metric_key": {
+          "pattern": "^[a-z0-9_.]+\\.v[0-9]+$",
+          "title": "Metric Key",
+          "type": "string"
+        },
+        "nullable": {
+          "default": true,
+          "title": "Nullable",
+          "type": "boolean"
+        },
+        "period": {
+          "minLength": 1,
+          "title": "Period",
+          "type": "string"
+        },
+        "provenance_classes": {
+          "items": {
+            "enum": [
+              "train",
+              "validation",
+              "test",
+              "synthetic",
+              "shadow",
+              "live"
+            ],
+            "type": "string"
+          },
+          "title": "Provenance Classes",
+          "type": "array"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "unit": {
+          "enum": [
+            "fraction",
+            "percent",
+            "currency",
+            "seconds",
+            "count",
+            "ratio"
+          ],
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "metric_key",
+        "label",
+        "description",
+        "unit",
+        "period",
+        "aggregation",
+        "direction",
+        "provenance_classes",
+        "formula",
+        "denominator",
+        "coverage_rule",
+        "failure_semantics"
+      ],
+      "title": "MetricDefinition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "catalog_id": {
+      "minLength": 1,
+      "title": "Catalog Id",
+      "type": "string"
+    },
+    "metrics": {
+      "items": {
+        "$ref": "#/$defs/MetricDefinition"
+      },
+      "title": "Metrics",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "metric_catalog.v1",
+      "default": "metric_catalog.v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "catalog_id",
+    "metrics"
+  ],
+  "title": "MetricCatalog",
+  "type": "object"
+}

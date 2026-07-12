@@ -1,0 +1,654 @@
+{
+  "$defs": {
+    "ContextToken": {
+      "additionalProperties": false,
+      "properties": {
+        "event_time": {
+          "format": "date-time",
+          "title": "Event Time",
+          "type": "string"
+        },
+        "observed": {
+          "default": true,
+          "title": "Observed",
+          "type": "boolean"
+        },
+        "token_type": {
+          "minLength": 1,
+          "title": "Token Type",
+          "type": "string"
+        },
+        "values": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Values",
+          "type": "object"
+        }
+      },
+      "required": [
+        "token_type",
+        "event_time"
+      ],
+      "title": "ContextToken",
+      "type": "object"
+    },
+    "MarketSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "format": "date-time",
+          "title": "As Of",
+          "type": "string"
+        },
+        "asset_id": {
+          "minLength": 1,
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "calendar_state": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Calendar State",
+          "type": "object"
+        },
+        "config_hash": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Config Hash"
+        },
+        "context_mask": {
+          "items": {
+            "type": "boolean"
+          },
+          "title": "Context Mask",
+          "type": "array"
+        },
+        "context_tokens": {
+          "items": {
+            "$ref": "#/$defs/ContextToken"
+          },
+          "title": "Context Tokens",
+          "type": "array"
+        },
+        "cross_asset_state": {
+          "additionalProperties": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object"
+          },
+          "title": "Cross Asset State",
+          "type": "object"
+        },
+        "data_manifest_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Data Manifest Hash",
+          "type": "string"
+        },
+        "feature_freshness_seconds": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Feature Freshness Seconds",
+          "type": "object"
+        },
+        "feature_manifest_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Feature Manifest Hash",
+          "type": "string"
+        },
+        "local_features": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Local Features",
+          "type": "object"
+        },
+        "object_id": {
+          "minLength": 1,
+          "title": "Object Id",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerIdentity"
+        },
+        "schema_version": {
+          "const": "market_snapshot.v1",
+          "default": "market_snapshot.v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "timeframe": {
+          "minLength": 1,
+          "title": "Timeframe",
+          "type": "string"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        },
+        "venue_state": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Venue State",
+          "type": "object"
+        }
+      },
+      "required": [
+        "object_id",
+        "as_of",
+        "producer",
+        "trace_id",
+        "asset_id",
+        "timeframe",
+        "data_manifest_hash",
+        "feature_manifest_hash"
+      ],
+      "title": "MarketSnapshot",
+      "type": "object"
+    },
+    "PositionState": {
+      "additionalProperties": false,
+      "properties": {
+        "average_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Average Price"
+        },
+        "max_adverse_excursion": {
+          "default": 0.0,
+          "title": "Max Adverse Excursion",
+          "type": "number"
+        },
+        "max_favorable_excursion": {
+          "default": 0.0,
+          "title": "Max Favorable Excursion",
+          "type": "number"
+        },
+        "side": {
+          "default": "flat",
+          "enum": [
+            "flat",
+            "long",
+            "short"
+          ],
+          "title": "Side",
+          "type": "string"
+        },
+        "stop_loss": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stop Loss"
+        },
+        "take_profit": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Take Profit"
+        },
+        "units": {
+          "default": 0.0,
+          "title": "Units",
+          "type": "number"
+        },
+        "unrealized_return": {
+          "default": 0.0,
+          "title": "Unrealized Return",
+          "type": "number"
+        }
+      },
+      "title": "PositionState",
+      "type": "object"
+    },
+    "PredictionBundle": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "format": "date-time",
+          "title": "As Of",
+          "type": "string"
+        },
+        "asset_id": {
+          "minLength": 1,
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "config_hash": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Config Hash"
+        },
+        "horizons": {
+          "additionalProperties": {
+            "$ref": "#/$defs/PredictionHorizon"
+          },
+          "title": "Horizons",
+          "type": "object"
+        },
+        "model_artifact_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Model Artifact Hash",
+          "type": "string"
+        },
+        "object_id": {
+          "minLength": 1,
+          "title": "Object Id",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerIdentity"
+        },
+        "schema_version": {
+          "const": "prediction_bundle.v1",
+          "default": "prediction_bundle.v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "object_id",
+        "as_of",
+        "producer",
+        "trace_id",
+        "asset_id",
+        "horizons",
+        "model_artifact_hash"
+      ],
+      "title": "PredictionBundle",
+      "type": "object"
+    },
+    "PredictionHorizon": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "output_schema": {
+          "minLength": 1,
+          "title": "Output Schema",
+          "type": "string"
+        },
+        "outputs": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Outputs",
+          "type": "object"
+        }
+      },
+      "required": [
+        "outputs",
+        "output_schema"
+      ],
+      "title": "PredictionHorizon",
+      "type": "object"
+    },
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "cell_id": {
+      "minLength": 1,
+      "title": "Cell Id",
+      "type": "string"
+    },
+    "cell_risk_budget": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Cell Risk Budget",
+      "type": "number"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "market": {
+      "$ref": "#/$defs/MarketSnapshot"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "pending_intent_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Pending Intent Ids",
+      "type": "array"
+    },
+    "portfolio_risk_budget": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Portfolio Risk Budget",
+      "type": "number"
+    },
+    "position": {
+      "$ref": "#/$defs/PositionState"
+    },
+    "predictions": {
+      "items": {
+        "$ref": "#/$defs/PredictionBundle"
+      },
+      "title": "Predictions",
+      "type": "array"
+    },
+    "previous_action": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous Action"
+    },
+    "previous_execution_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous Execution Id"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "regime": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Regime"
+    },
+    "rush_probability": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rush Probability"
+    },
+    "schema_version": {
+      "const": "decision_context.v1",
+      "default": "decision_context.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seconds_to_weekend_close": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Seconds To Weekend Close"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "cell_id",
+    "market"
+  ],
+  "title": "DecisionContext",
+  "type": "object"
+}

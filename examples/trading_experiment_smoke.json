@@ -1,0 +1,76 @@
+{
+  "schema_version": "trading_experiment.v1",
+  "experiment": {
+    "name": "single-cell-contract-smoke",
+    "mode": "train",
+    "seed": 7
+  },
+  "code": {
+    "repositories": {
+      "agent-multi": "COMMIT_REQUIRED",
+      "gym-fx": "COMMIT_REQUIRED"
+    }
+  },
+  "data": {
+    "asset": "fx:EUR/USD",
+    "timeframe": "4h",
+    "input_data_file": "${DATA_ROOT}/eurusd_4h.csv",
+    "data_manifest_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "walk_forward": {
+    "retrain_cadence": "weekly",
+    "validation_weeks": 52,
+    "test_weeks": 52
+  },
+  "environment": {
+    "plugin": "gym_fx_env",
+    "initial_cash": 10000.0
+  },
+  "context_encoder": {
+    "family": "none"
+  },
+  "predictions": {},
+  "rush_detector": {
+    "enabled": false
+  },
+  "asset_policy": {
+    "plugin": "project3_sac_actor_critic_agent"
+  },
+  "lifecycle_policy": {
+    "plugin": "default_strategy"
+  },
+  "risk": {
+    "rel_volume": 0.05,
+    "stop_loss_atr": 2.0,
+    "take_profit_atr": 3.0
+  },
+  "portfolio": {
+    "allocator": "static",
+    "cells": [
+      "fx:EUR/USD@4h:technical-v1:sac"
+    ]
+  },
+  "training": {
+    "pipeline_plugin": "rl_pipeline_with_validation",
+    "total_timesteps": 1000,
+    "train_seed": 7
+  },
+  "objectives": {
+    "l1": "return_minus_downside",
+    "l2": "validation_rap"
+  },
+  "optimization": {
+    "plugin": "default_optimizer",
+    "enabled": false
+  },
+  "artifacts": {
+    "root": "${ARTIFACT_ROOT}"
+  },
+  "olap": {
+    "enabled": true
+  },
+  "deployment": {
+    "channel": "experimental",
+    "credential_ref": "env:OANDA_TOKEN"
+  }
+}

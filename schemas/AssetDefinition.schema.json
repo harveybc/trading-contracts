@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "AssetClass": {
+      "enum": [
+        "fx",
+        "crypto",
+        "equity",
+        "etf",
+        "commodity",
+        "index",
+        "fixed_income",
+        "cash",
+        "other"
+      ],
+      "title": "AssetClass",
+      "type": "string"
+    },
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "asset_class": {
+      "$ref": "#/$defs/AssetClass"
+    },
+    "asset_id": {
+      "minLength": 1,
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "base": {
+      "minLength": 1,
+      "title": "Base",
+      "type": "string"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "quote": {
+      "minLength": 1,
+      "title": "Quote",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "asset_definition.v1",
+      "default": "asset_definition.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    },
+    "venue_mappings": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Venue Mappings",
+      "type": "object"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "asset_id",
+    "asset_class",
+    "base",
+    "quote"
+  ],
+  "title": "AssetDefinition",
+  "type": "object"
+}

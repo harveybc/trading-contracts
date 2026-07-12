@@ -1,0 +1,28 @@
+{
+  "as_of": "2026-07-10T20:00:00Z",
+  "channel": "experimental",
+  "compatibility": {
+    "execution_contract_version": "order_intent.v1"
+  },
+  "components": {
+    "asset_policy": "sha256:b19dcf0be51fdb2df46acda5a3c4be27ffff24f6fe2494a67cc90b5a58c3e0af"
+  },
+  "config_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "object_id": "deployment-balanced-001",
+  "portfolio_cells": [
+    "crypto:SOL/USDT@1h:technical-v1:sac"
+  ],
+  "producer": {
+    "name": "contract-example-builder",
+    "version": "0.1.0"
+  },
+  "release_id": "stack-2026w28-balanced-001",
+  "schema_version": "deployment_manifest.v1",
+  "trace_id": "example-trace-001",
+  "training_cutoff": "2026-07-10T19:59:59Z",
+  "valid_from": "2026-07-10T20:00:00Z",
+  "validation_metrics": {
+    "rap.mean_weekly.v1": 0.001,
+    "return.mean_weekly.v1": 0.002
+  }
+}

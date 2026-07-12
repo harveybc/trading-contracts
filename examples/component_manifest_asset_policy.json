@@ -1,0 +1,46 @@
+{
+  "artifact": {
+    "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "media_type": "application/x-stable-baselines3",
+    "size_bytes": 1024,
+    "uri": "artifact://sha256/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "as_of": "2026-07-10T20:00:00Z",
+  "code_commits": {
+    "agent-multi": "1111111111111111111111111111111111111111"
+  },
+  "config_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "dataset_hashes": {
+    "training": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "domain_id": "trading_asset_policy_sac_v1",
+  "execution_contract_version": "order_intent.v1",
+  "feature_hashes": {
+    "technical": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "input_contract_versions": [
+    "decision_context.v1"
+  ],
+  "object_id": "component-solusdt-1h-policy",
+  "output_contract_versions": [
+    "asset_intent.v1"
+  ],
+  "producer": {
+    "name": "contract-example-builder",
+    "version": "0.1.0"
+  },
+  "resolved_config": {
+    "asset": "crypto:SOL/USDT",
+    "timeframe": "1h"
+  },
+  "resolved_config_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "role": "asset_policy",
+  "schema_version": "component_manifest.v1",
+  "seed": 7,
+  "trace_id": "example-trace-001",
+  "training_cutoff": "2026-07-10T19:59:59Z",
+  "validation_metrics": {
+    "rap.mean_weekly.v1": 0.001
+  },
+  "validation_weeks": 52
+}

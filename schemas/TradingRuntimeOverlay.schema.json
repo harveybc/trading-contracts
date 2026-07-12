@@ -1,0 +1,86 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "devices": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Devices",
+      "type": "object"
+    },
+    "environment_refs": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Environment Refs",
+      "type": "object"
+    },
+    "machine_id": {
+      "title": "Machine Id",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "repositories": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Repositories",
+      "type": "object"
+    },
+    "resource_limits": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "title": "Resource Limits",
+      "type": "object"
+    },
+    "roots": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Roots",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "trading_runtime_overlay.v1",
+      "default": "trading_runtime_overlay.v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "machine_id",
+    "roots"
+  ],
+  "title": "TradingRuntimeOverlay",
+  "type": "object"
+}
