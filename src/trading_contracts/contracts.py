@@ -198,6 +198,7 @@ class AssetIntent(PersistedContract):
     action: AssetAction
     target_exposure: Annotated[float, Field(ge=-1.0, le=1.0)] | None = None
     confidence: Probability | None = None
+    urgency: Probability | None = None
     strategy_rel_volume: Annotated[float, Field(ge=0.0)] | None = None
     risk_geometry: RiskGeometry | None = None
     reason_codes: list[str] = Field(default_factory=list)

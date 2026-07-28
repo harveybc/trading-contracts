@@ -105,6 +105,7 @@ def test_market_prediction_and_asset_intent_round_trip() -> None:
         action=AssetAction.TARGET,
         target_exposure=0.4,
         confidence=prediction.horizons["6h"].confidence,
+        urgency=0.75,
         strategy_rel_volume=0.05,
         risk_geometry=RiskGeometry(mode="atr", k_sl=2.0, k_tp=3.0),
         reason_codes=["long_horizon_edge"],
@@ -112,6 +113,43 @@ def test_market_prediction_and_asset_intent_round_trip() -> None:
     )
     restored = AssetIntent.model_validate_json(intent.model_dump_json())
     assert restored == intent
+
+
+@pytest.mark.parametrize("urgency", [0.0, 1.0])
+def test_asset_intent_accepts_urgency_bounds(urgency: float) -> None:
+    intent = AssetIntent(
+        **base_fields(f"intent-urgency-{urgency}"),
+        cell_id="fx:EUR/USD@4h:technical-v1:sac",
+        asset_id="fx:EUR/USD",
+        action=AssetAction.HOLD,
+        urgency=urgency,
+        artifact_hash=HASH_A,
+    )
+    assert intent.urgency == urgency
+
+
+def test_asset_intent_urgency_defaults_to_none() -> None:
+    intent = AssetIntent(
+        **base_fields("intent-without-urgency"),
+        cell_id="fx:EUR/USD@4h:technical-v1:sac",
+        asset_id="fx:EUR/USD",
+        action=AssetAction.HOLD,
+        artifact_hash=HASH_A,
+    )
+    assert intent.urgency is None
+
+
+@pytest.mark.parametrize("urgency", [-0.01, 1.01])
+def test_asset_intent_rejects_urgency_outside_bounds(urgency: float) -> None:
+    with pytest.raises(ValidationError):
+        AssetIntent(
+            **base_fields(f"intent-invalid-urgency-{urgency}"),
+            cell_id="fx:EUR/USD@4h:technical-v1:sac",
+            asset_id="fx:EUR/USD",
+            action=AssetAction.HOLD,
+            urgency=urgency,
+            artifact_hash=HASH_A,
+        )
 
 
 def test_contracts_reject_unknown_fields_and_naive_dates() -> None:

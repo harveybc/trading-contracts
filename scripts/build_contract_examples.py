@@ -6,6 +6,8 @@ from pathlib import Path
 
 from trading_contracts import (
     ArtifactReference,
+    AssetAction,
+    AssetIntent,
     ComponentManifest,
     DeploymentManifest,
     OrderIntent,
@@ -84,6 +86,18 @@ def main() -> int:
         allocator_id="static-v1",
     )
     _write(output / "portfolio_intent_smoke.json", portfolio)
+
+    asset_intent = AssetIntent(
+        **_base("asset-intent-001"),
+        cell_id="crypto:SOL/USDT@1h:technical-v1:sac",
+        asset_id="crypto:SOL/USDT",
+        action=AssetAction.TARGET,
+        target_exposure=0.35,
+        confidence=0.7,
+        urgency=0.8,
+        artifact_hash=HASH_B,
+    )
+    _write(output / "asset_intent_smoke.json", asset_intent)
 
     order = OrderIntent(
         **_base("order-intent-001"),
