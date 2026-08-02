@@ -398,6 +398,40 @@ def test_capability_evidence_rejects_unknown_class():
         _snapshot(capability_evidence="assumed_from_documentation")
 
 
+# ── Finding 051: cancel/flatten must identify their target ──
+
+def test_cancel_without_target_rejects():
+    with pytest.raises(ValidationError, match="reduce_target_order_intent_id"):
+        _entry(intent_class="risk_reducing", reduce_action="cancel",
+               protection=None, risk=None, capability_snapshot_hash=None,
+               delta_units=0.0)
+
+
+def test_flatten_without_target_rejects():
+    with pytest.raises(ValidationError, match="reduce_target_order_intent_id"):
+        _entry(intent_class="risk_reducing", reduce_action="flatten",
+               protection=None, risk=None, capability_snapshot_hash=None,
+               delta_units=-10.0)
+
+
+def test_cancel_with_target_and_broker_ids_accepts():
+    intent = _entry(
+        intent_class="risk_reducing", reduce_action="cancel",
+        protection=None, risk=None, capability_snapshot_hash=None,
+        delta_units=0.0,
+        reduce_target_order_intent_id="oi2-rsv-abc",
+        reduce_target_broker_ids={"ibkr_order_id": "17"},
+    )
+    assert intent.reduce_target_order_intent_id == "oi2-rsv-abc"
+
+
+def test_close_still_needs_no_target():
+    intent = _entry(intent_class="risk_reducing", reduce_action="close",
+                    protection=None, risk=None, capability_snapshot_hash=None,
+                    delta_units=-10.0)
+    assert intent.reduce_target_order_intent_id is None
+
+
 # ── Ruling R4: amended transition law ──
 
 def test_r4_fill_before_ack_is_legal():

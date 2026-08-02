@@ -273,6 +273,25 @@
       "default": null,
       "title": "Reduce Action"
     },
+    "reduce_target_broker_ids": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Reduce Target Broker Ids",
+      "type": "object"
+    },
+    "reduce_target_order_intent_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reduce Target Order Intent Id"
+    },
     "risk": {
       "anyOf": [
         {

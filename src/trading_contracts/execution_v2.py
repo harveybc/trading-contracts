@@ -65,6 +65,10 @@ class OrderIntentV2(PersistedContract):
     reduce_action: (
         Literal["close", "flatten", "cancel", "modify_protection"] | None
     ) = None
+    # Finding 051: a cancel or flatten must deterministically identify its
+    # target order; broker ids ride along once observed.
+    reduce_target_order_intent_id: str | None = None
+    reduce_target_broker_ids: dict[str, str] = Field(default_factory=dict)
     delta_units: Annotated[float, Field(allow_inf_nan=False)]
     limit_price: FinitePositive | None = None
     entry_trigger_price: FinitePositive | None = None
@@ -115,6 +119,14 @@ class OrderIntentV2(PersistedContract):
                 raise ValueError("risk_reducing intent cannot carry entry_trigger_price")
             if self.reduce_action == "modify_protection" and self.protection is None:
                 raise ValueError("modify_protection requires a ProtectiveBracket")
+            if (
+                self.reduce_action in ("cancel", "flatten")
+                and not self.reduce_target_order_intent_id
+            ):
+                raise ValueError(
+                    f"{self.reduce_action} requires reduce_target_order_intent_id "
+                    "(finding 051)"
+                )
         return self
 
     def _validate_geometry(self) -> None:
