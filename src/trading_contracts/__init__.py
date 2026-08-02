@@ -34,8 +34,32 @@ from .contracts import (
     RiskGeometry,
     make_cell_id,
 )
+from .execution_v2 import (
+    LEGAL_TRANSITIONS,
+    BrokerCapabilitySnapshot,
+    ExecutionReportV2,
+    InstrumentCapability,
+    OrderIntentV2,
+    OwnerCommand,
+    ProtectionLegState,
+    ProtectiveBracket,
+    RiskEnvelope,
+    is_legal_transition,
+    protection_covers_filled,
+)
 
 __all__ = [
+    "BrokerCapabilitySnapshot",
+    "ExecutionReportV2",
+    "InstrumentCapability",
+    "LEGAL_TRANSITIONS",
+    "OrderIntentV2",
+    "OwnerCommand",
+    "ProtectionLegState",
+    "ProtectiveBracket",
+    "RiskEnvelope",
+    "is_legal_transition",
+    "protection_covers_filled",
     "AccountSnapshot",
     "ArtifactReference",
     "AssetAction",

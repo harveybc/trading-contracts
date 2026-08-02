@@ -1,0 +1,202 @@
+{
+  "$defs": {
+    "InstrumentCapability": {
+      "additionalProperties": false,
+      "properties": {
+        "instrument": {
+          "minLength": 1,
+          "title": "Instrument",
+          "type": "string"
+        },
+        "margin_rate": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Margin Rate"
+        },
+        "min_units": {
+          "exclusiveMinimum": 0.0,
+          "title": "Min Units",
+          "type": "number"
+        },
+        "native_bracket": {
+          "title": "Native Bracket",
+          "type": "boolean"
+        },
+        "native_stop_loss": {
+          "title": "Native Stop Loss",
+          "type": "boolean"
+        },
+        "native_take_profit": {
+          "title": "Native Take Profit",
+          "type": "boolean"
+        },
+        "price_decimals": {
+          "maximum": 12,
+          "minimum": 0,
+          "title": "Price Decimals",
+          "type": "integer"
+        },
+        "shortable": {
+          "title": "Shortable",
+          "type": "boolean"
+        },
+        "tradeable": {
+          "title": "Tradeable",
+          "type": "boolean"
+        },
+        "unit_step": {
+          "exclusiveMinimum": 0.0,
+          "title": "Unit Step",
+          "type": "number"
+        }
+      },
+      "required": [
+        "instrument",
+        "tradeable",
+        "shortable",
+        "min_units",
+        "unit_step",
+        "price_decimals",
+        "native_stop_loss",
+        "native_take_profit",
+        "native_bracket"
+      ],
+      "title": "InstrumentCapability",
+      "type": "object"
+    },
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Account-specific capability facts; referenced by hash from intents.\n\n``account_fingerprint`` is a one-way fingerprint; raw account identifiers\nnever enter persisted contracts (doc 09 \u00a75).",
+  "properties": {
+    "account_fingerprint": {
+      "minLength": 1,
+      "title": "Account Fingerprint",
+      "type": "string"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "environment": {
+      "enum": [
+        "paper",
+        "demo",
+        "live"
+      ],
+      "title": "Environment",
+      "type": "string"
+    },
+    "instruments": {
+      "items": {
+        "$ref": "#/$defs/InstrumentCapability"
+      },
+      "title": "Instruments",
+      "type": "array"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "schema_version": {
+      "const": "broker_capability_snapshot.v1",
+      "default": "broker_capability_snapshot.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    },
+    "venue": {
+      "minLength": 1,
+      "title": "Venue",
+      "type": "string"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "venue",
+    "account_fingerprint",
+    "environment",
+    "instruments"
+  ],
+  "title": "BrokerCapabilitySnapshot",
+  "type": "object"
+}

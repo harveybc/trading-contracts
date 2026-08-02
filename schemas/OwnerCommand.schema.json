@@ -1,0 +1,140 @@
+{
+  "$defs": {
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Deterministic owner hold/kill contract (finding 042).\n\nOnly risk-reducing verbs are expressible. The handler additionally\nenforces an issuer allowlist, exact-phrase match, nonce persistence and\nexpiry; no LLM, Hermes or social process may originate, transform or\napprove an instance.",
+  "properties": {
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "command": {
+      "enum": [
+        "hold",
+        "kill",
+        "flatten_all",
+        "cancel_pending"
+      ],
+      "title": "Command",
+      "type": "string"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "exact_phrase": {
+      "minLength": 1,
+      "title": "Exact Phrase",
+      "type": "string"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "minLength": 1,
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "issuer_id": {
+      "minLength": 1,
+      "title": "Issuer Id",
+      "type": "string"
+    },
+    "nonce": {
+      "minLength": 1,
+      "title": "Nonce",
+      "type": "string"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "schema_version": {
+      "const": "owner_command.v1",
+      "default": "owner_command.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "command",
+    "issuer_id",
+    "exact_phrase",
+    "nonce",
+    "expires_at",
+    "idempotency_key"
+  ],
+  "title": "OwnerCommand",
+  "type": "object"
+}

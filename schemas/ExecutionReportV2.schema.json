@@ -1,0 +1,327 @@
+{
+  "$defs": {
+    "ProducerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instance Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ProducerIdentity",
+      "type": "object"
+    },
+    "ProtectionLegState": {
+      "additionalProperties": false,
+      "properties": {
+        "broker_confirmed": {
+          "title": "Broker Confirmed",
+          "type": "boolean"
+        },
+        "broker_leg_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Broker Leg Id"
+        },
+        "covered_units": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Covered Units",
+          "type": "number"
+        },
+        "leg": {
+          "enum": [
+            "stop_loss",
+            "take_profit"
+          ],
+          "title": "Leg",
+          "type": "string"
+        },
+        "price": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Price"
+        }
+      },
+      "required": [
+        "leg",
+        "broker_confirmed"
+      ],
+      "title": "ProtectionLegState",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "attempt_id": {
+      "minLength": 1,
+      "title": "Attempt Id",
+      "type": "string"
+    },
+    "bracket_role": {
+      "enum": [
+        "parent",
+        "stop_loss",
+        "take_profit"
+      ],
+      "title": "Bracket Role",
+      "type": "string"
+    },
+    "broker_ids": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Broker Ids",
+      "type": "object"
+    },
+    "commission": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Commission",
+      "type": "number"
+    },
+    "config_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Config Hash"
+    },
+    "conversion_cost": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Conversion Cost",
+      "type": "number"
+    },
+    "filled_price": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Filled Price"
+    },
+    "filled_units": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Filled Units",
+      "type": "number"
+    },
+    "financing": {
+      "default": 0.0,
+      "title": "Financing",
+      "type": "number"
+    },
+    "latency_ms": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Latency Ms"
+    },
+    "object_id": {
+      "minLength": 1,
+      "title": "Object Id",
+      "type": "string"
+    },
+    "order_intent_id": {
+      "minLength": 1,
+      "title": "Order Intent Id",
+      "type": "string"
+    },
+    "parent_order_intent_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Order Intent Id"
+    },
+    "previous_state": {
+      "anyOf": [
+        {
+          "enum": [
+            "requested",
+            "accepted",
+            "partially_filled",
+            "filled",
+            "rejected",
+            "cancel_pending",
+            "cancelled",
+            "expired",
+            "modified",
+            "closed",
+            "unknown_requires_reconciliation"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous State"
+    },
+    "producer": {
+      "$ref": "#/$defs/ProducerIdentity"
+    },
+    "protection_legs": {
+      "items": {
+        "$ref": "#/$defs/ProtectionLegState"
+      },
+      "title": "Protection Legs",
+      "type": "array"
+    },
+    "reconciliation_required": {
+      "default": false,
+      "title": "Reconciliation Required",
+      "type": "boolean"
+    },
+    "requested_price": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Requested Price"
+    },
+    "requested_units": {
+      "title": "Requested Units",
+      "type": "number"
+    },
+    "schema_version": {
+      "const": "execution_report.v2",
+      "default": "execution_report.v2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "slippage_cost": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Slippage Cost",
+      "type": "number"
+    },
+    "spread_cost": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Spread Cost",
+      "type": "number"
+    },
+    "state": {
+      "enum": [
+        "requested",
+        "accepted",
+        "partially_filled",
+        "filled",
+        "rejected",
+        "cancel_pending",
+        "cancelled",
+        "expired",
+        "modified",
+        "closed",
+        "unknown_requires_reconciliation"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    }
+  },
+  "required": [
+    "object_id",
+    "as_of",
+    "producer",
+    "trace_id",
+    "order_intent_id",
+    "attempt_id",
+    "bracket_role",
+    "state",
+    "requested_units"
+  ],
+  "title": "ExecutionReportV2",
+  "type": "object"
+}
