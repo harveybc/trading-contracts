@@ -108,7 +108,7 @@
     }
   },
   "additionalProperties": false,
-  "description": "Account-specific capability facts; referenced by hash from intents.\n\n``account_fingerprint`` is a one-way fingerprint; raw account identifiers\nnever enter persisted contracts (doc 09 \u00a75).",
+  "description": "Account-specific capability facts; referenced by hash from intents.\n\n``account_fingerprint`` is a one-way fingerprint; raw account identifiers\nnever enter persisted contracts (doc 09 \u00a75).\n\nRuling R3 (2026-08-02, amended pre-consumption with auditor order):\n``capability_evidence`` is mandatory provenance. ``synthetic_fixture``\nmay drive L0 mechanics only, requires a synthetic fingerprint, and is\nmechanically excluded from venue-readiness, broker-compatibility and L1\nauthorization claims. ``recorded_observed`` is replay evidence, never\ncurrent readiness. Only fresh ``live_observed`` evidence from the target\naccount supports a readiness claim. Capabilities are never inferred\nacross venues.",
   "properties": {
     "account_fingerprint": {
       "minLength": 1,
@@ -118,6 +118,15 @@
     "as_of": {
       "format": "date-time",
       "title": "As Of",
+      "type": "string"
+    },
+    "capability_evidence": {
+      "enum": [
+        "live_observed",
+        "recorded_observed",
+        "synthetic_fixture"
+      ],
+      "title": "Capability Evidence",
       "type": "string"
     },
     "config_hash": {
@@ -163,6 +172,16 @@
       "title": "Schema Version",
       "type": "string"
     },
+    "source_artifact_hash": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Artifact Hash",
+      "type": "string"
+    },
+    "source_observed_at": {
+      "format": "date-time",
+      "title": "Source Observed At",
+      "type": "string"
+    },
     "trace_id": {
       "minLength": 1,
       "title": "Trace Id",
@@ -195,6 +214,9 @@
     "venue",
     "account_fingerprint",
     "environment",
+    "capability_evidence",
+    "source_artifact_hash",
+    "source_observed_at",
     "instruments"
   ],
   "title": "BrokerCapabilitySnapshot",

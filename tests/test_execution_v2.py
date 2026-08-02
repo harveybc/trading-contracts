@@ -344,22 +344,79 @@ def test_naive_expiry_rejects():
         _command(expires_at=datetime(2026, 8, 2, 6, 0))
 
 
-# ── Capability snapshot ──
+# ── Capability snapshot (ruling R3: mandatory evidence provenance) ──
+
+_CAP = dict(
+    instrument="USD.CAD", tradeable=True, shortable=True, min_units=1.0,
+    unit_step=1.0, price_decimals=5, native_stop_loss=True,
+    native_take_profit=True, native_bracket=True,
+)
+
+
+def _snapshot(**kw):
+    base = dict(
+        **_identity(object_id="cap-1"),
+        venue="ibkr_paper",
+        account_fingerprint="fp-1",
+        environment="paper",
+        capability_evidence="live_observed",
+        source_artifact_hash="sha256:" + "d" * 64,
+        source_observed_at=NOW,
+        instruments=[InstrumentCapability(**_CAP)],
+    )
+    base.update(kw)
+    return BrokerCapabilitySnapshot(**base)
+
 
 def test_capability_snapshot_rejects_duplicate_instruments():
-    cap = dict(
-        instrument="USD.CAD", tradeable=True, shortable=True, min_units=1.0,
-        unit_step=1.0, price_decimals=5, native_stop_loss=True,
-        native_take_profit=True, native_bracket=True,
-    )
     with pytest.raises(ValidationError, match="duplicate instrument"):
+        _snapshot(instruments=[InstrumentCapability(**_CAP),
+                               InstrumentCapability(**_CAP)])
+
+
+def test_capability_evidence_class_is_mandatory():
+    with pytest.raises(ValidationError):
         BrokerCapabilitySnapshot(
-            **_identity(object_id="cap-1"),
-            venue="ibkr_paper",
-            account_fingerprint="fp-1",
+            **_identity(object_id="cap-2"),
+            venue="ibkr_paper", account_fingerprint="fp-1",
             environment="paper",
-            instruments=[InstrumentCapability(**cap), InstrumentCapability(**cap)],
+            instruments=[InstrumentCapability(**_CAP)],
         )
+
+
+def test_synthetic_fixture_requires_synthetic_fingerprint():
+    with pytest.raises(ValidationError, match="synthetic"):
+        _snapshot(capability_evidence="synthetic_fixture",
+                  account_fingerprint="fp-real-looking")
+    ok = _snapshot(capability_evidence="synthetic_fixture",
+                   account_fingerprint="synthetic-ibkr-fixture-1")
+    assert ok.capability_evidence == "synthetic_fixture"
+
+
+def test_capability_evidence_rejects_unknown_class():
+    with pytest.raises(ValidationError):
+        _snapshot(capability_evidence="assumed_from_documentation")
+
+
+# ── Ruling R4: amended transition law ──
+
+def test_r4_fill_before_ack_is_legal():
+    assert is_legal_transition("requested", "filled")
+    assert is_legal_transition("requested", "partially_filled")
+
+
+def test_r4_cancel_before_ack_is_legal():
+    assert is_legal_transition("requested", "cancel_pending")
+
+
+def test_r4_expiry_while_cancel_pending_is_legal():
+    assert is_legal_transition("cancel_pending", "expired")
+
+
+def test_r4_reconciliation_paths_from_unknown():
+    for target in ("cancel_pending", "modified",
+                   "unknown_requires_reconciliation"):
+        assert is_legal_transition("unknown_requires_reconciliation", target)
 
 
 # ── v1 preservation: semantics migrate by version, never by edit ──

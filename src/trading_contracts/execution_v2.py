@@ -165,9 +165,15 @@ ExecutionStateV2 = Literal[
     "unknown_requires_reconciliation",
 ]
 
+# Ruling R4 (2026-08-02): includes fill-before-ack, cancel-before-ack,
+# expiry-while-cancel-pending, repeated-unknown evidence and reconciliation
+# into cancel_pending/modified. `closed` is an ORDER terminal state only;
+# open/closed EXPOSURE has its own persisted lifecycle in the LTS ledger and
+# is never inferred from an order state (finding 044).
 LEGAL_TRANSITIONS: dict[str, frozenset[str]] = {
     "requested": frozenset(
-        {"accepted", "rejected", "cancelled", "expired",
+        {"accepted", "partially_filled", "filled", "cancel_pending",
+         "rejected", "cancelled", "expired",
          "unknown_requires_reconciliation"}
     ),
     "accepted": frozenset(
@@ -180,7 +186,7 @@ LEGAL_TRANSITIONS: dict[str, frozenset[str]] = {
     ),
     "filled": frozenset({"modified", "closed", "unknown_requires_reconciliation"}),
     "cancel_pending": frozenset(
-        {"cancelled", "partially_filled", "filled",
+        {"cancelled", "expired", "partially_filled", "filled",
          "unknown_requires_reconciliation"}
     ),
     "modified": frozenset(
@@ -189,7 +195,8 @@ LEGAL_TRANSITIONS: dict[str, frozenset[str]] = {
     ),
     "unknown_requires_reconciliation": frozenset(
         {"accepted", "partially_filled", "filled", "rejected", "cancelled",
-         "expired", "closed"}
+         "expired", "closed", "cancel_pending", "modified",
+         "unknown_requires_reconciliation"}
     ),
     "rejected": frozenset(),
     "cancelled": frozenset(),
@@ -299,6 +306,15 @@ class BrokerCapabilitySnapshot(PersistedContract):
 
     ``account_fingerprint`` is a one-way fingerprint; raw account identifiers
     never enter persisted contracts (doc 09 §5).
+
+    Ruling R3 (2026-08-02, amended pre-consumption with auditor order):
+    ``capability_evidence`` is mandatory provenance. ``synthetic_fixture``
+    may drive L0 mechanics only, requires a synthetic fingerprint, and is
+    mechanically excluded from venue-readiness, broker-compatibility and L1
+    authorization claims. ``recorded_observed`` is replay evidence, never
+    current readiness. Only fresh ``live_observed`` evidence from the target
+    account supports a readiness claim. Capabilities are never inferred
+    across venues.
     """
 
     schema_version: Literal["broker_capability_snapshot.v1"] = (
@@ -307,13 +323,30 @@ class BrokerCapabilitySnapshot(PersistedContract):
     venue: NonEmpty
     account_fingerprint: NonEmpty
     environment: Literal["paper", "demo", "live"]
+    capability_evidence: Literal[
+        "live_observed", "recorded_observed", "synthetic_fixture"
+    ]
+    source_artifact_hash: Sha256
+    source_observed_at: datetime
     instruments: list[InstrumentCapability]
 
     @model_validator(mode="after")
-    def validate_unique_instruments(self) -> "BrokerCapabilitySnapshot":
+    def validate_capability_provenance(self) -> "BrokerCapabilitySnapshot":
         names = [entry.instrument for entry in self.instruments]
         if len(names) != len(set(names)):
             raise ValueError("duplicate instrument in capability snapshot")
+        if (
+            self.source_observed_at.tzinfo is None
+            or self.source_observed_at.utcoffset() is None
+        ):
+            raise ValueError("source_observed_at must be timezone-aware")
+        if self.capability_evidence == "synthetic_fixture" and not (
+            self.account_fingerprint.startswith("synthetic-")
+        ):
+            raise ValueError(
+                "synthetic_fixture capability requires a synthetic account "
+                "fingerprint (prefix 'synthetic-')"
+            )
         return self
 
 
